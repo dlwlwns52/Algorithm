@@ -3,7 +3,7 @@ num = int(sys.stdin.readline())
 queue = []
 
 for i in range(num):
-    value = list(map(str, sys.stdin.readline().strip().split()))
+    value = list(map(str, sys.stdin.readline().split()))
     
     if value[0] == "push":
         value[1] = int(value[1])
@@ -14,10 +14,9 @@ for i in range(num):
             print(-1)
             continue
         else: 
-            queue.reverse()
-            print(queue[len(queue)-1]) #[1,2,3,4]
-            queue.pop()
-            queue.reverse()
+            print(queue[0])
+            queue.pop(0)
+
         
     elif value[0] == "size":
         print(len(queue))
