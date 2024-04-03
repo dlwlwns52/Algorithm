@@ -1,25 +1,27 @@
+#1. stack 를 사용한다.
+#2. '(' 일 경우 스텍에 넣는다
+#3. ')'일 경우 바로 전거가 '(' 인 경우 pop한다. 아닌 경우 넣는다.
+#4. not stack 인 경우 yes 아닌경우 no
+
 n = int(input())
-ans = 0
 
 for i in range(n):
-    vps = input()
-    if vps.count("(") == vps.count(")") and vps[len(vps)-1] != "(" :
+    stack = []
+    ps = input()
+    for i in ps:
+        if i == "(":
+            stack.append(i)
+        elif i == ")":
+          if stack:
+            if stack[-1] == "(":
+                stack.pop()
+            elif stack[-1] == ")":
+                stack.append(i)
+          elif not stack:
+            stack.append(i)
         
-        for k in range(len(vps)):
-            if ans >= 0:
-                if vps[k] == "(":
-                    ans +=1
-                elif vps[k] == ")":
-                    ans -=1
-                if k == len(vps)-1 and ans == 0:
-                    print("YES")
-            else:
-                print("NO")
-                break
-        ans = 0
-    else:
+    if stack:
         print("NO")
-        continue
+    else:
+        print("YES")
             
-        
-    
