@@ -1,22 +1,22 @@
-n = int(input())
-sang = list(map(int, input().split()))
-m = int(input())
-digit = list(map(int, input().split()))
-answer = []
+import sys
+input = sys.stdin.read
 
-sang_dict = {}
-for i in sang:
-  if i in sang_dict:
-    sang_dict[i] += 1
-  else:
-    sang_dict[i] = 1
+# 입력 받기
+data = input().split()
+N = int(data[0])
+NL = list(map(int, data[1:N+1]))
+M = int(data[N+1])
+ML = list(map(int, data[N+2:]))
 
-for i in range(m):
-  if digit[i] in sang_dict:
-       answer.append(sang_dict[digit[i]])
+# 딕셔너리로 숫자 카드 개수 세기
+dic = {}
+for i in NL:
+    dic[i] = dic.get(i, 0) + 1
 
-  else: 
-    answer.append(0)
+# 결과 저장 및 출력
+result = []
+for k in ML:
+    result.append(dic.get(k, 0))
 
-for i in range(len(answer)):
-    print(answer[i], end= " ")
+# 공백으로 구분하여 출력
+print(' '.join(map(str, result)))
