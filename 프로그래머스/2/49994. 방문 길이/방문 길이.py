@@ -1,77 +1,30 @@
-# 5보다 크면 안되고 -5보다 작으면 안된다.
-# 0. count_list설정
-# 1. [0,0]으로 초기값 설정, 이동할 좌표값 end설정
-# 2. dirs 길이만큼 for문 
-# 3. 'U', 'D', 'R', 'L' 만큼 +1하는데 end가 +5보다 크거나 -5보다 작으면 현재값 유지 
-# 4. 해당 이동한 좌표들 imsi_list = [start, end] 설정
-# 4. count_list에 imsi_list 값이 없다면 answer+=1 하고 append
-# 5. 있다면 생략 
-
-
 def solution(dirs):
     answer = 0
-    count_list = []
-    start = [0,0]
-    end = [0,0]
-    
-    for i in range(len(dirs)):
-        imsi_list = []
-        if dirs[i] == "U":
-            if end[1] == 5:   
-                continue
-            else:
-                end[1] += 1
-                path = tuple(sorted([tuple(start), tuple(end)]))
+    start = (0,0)
+    UDRL = {"U" : [0,1],"D" : [0,-1],"R" : [1,0],"L" : [-1,0]}
+    countSet = set()
+    for i in dirs:
+#         키에서 벨류갑 봅아서 쓰는법 ->  UDRL[i][0] 일케하면됨
+  
+        dx, dy = start[0]+ UDRL[i][0], start[1]+UDRL[i][1]
+   
+        if dx < -5 or dx > 5 or dy < -5 or dy > 5:
+            continue
+        end = (dx, dy)
+#         [기존 좌표, 다음 좌표], [다음좌표, 기존 좌표] set에 넣기
+        list1 = []
+        list1.append(start)
+        list1.append(end)
+#         set에 리스트는 못 넣는다
+        countSet.add(tuple(list1))
+        list1 = []
+        list1.append(end)
+        list1.append(start)
+        countSet.add(tuple(list1))
+ 
+        start = end       
+        # print(countSet)
 
-                start[1] += 1
-                if path in count_list:
-                    continue
-                else:
-                    answer +=1 
-                    count_list.append(path)
-                    
-        elif dirs[i] == "D":
-            if end[1] == -5:
-                continue
-            else:
-                end[1] -= 1
-                path = tuple(sorted([tuple(start), tuple(end)]))
-    
-                start[1] -=1
-                if path in count_list:
-                    continue
-                else:
-                    answer +=1 
-                    count_list.append(path)
         
-        elif dirs[i] == "R":
-            if end[0] == 5:
-                continue
-            else:
-                end[0] += 1
-                path = tuple(sorted([tuple(start), tuple(end)]))
-
-                start[0] +=1
-                if path in count_list:
-                    continue
-                else:
-                    answer +=1 
-                    count_list.append(path)
-                    
-        elif dirs[i] == "L":
-            if end[0] == -5:
-                continue
-            else:
-                end[0] -= 1
-                path = tuple(sorted([tuple(start), tuple(end)]))
-                start[0] -=1
-                if path in count_list:
-                    continue
-                else:
-                    answer +=1 
-                    count_list.append(path)
-    print(count_list)
+    answer = len(countSet) // 2
     return answer
-
-
-
