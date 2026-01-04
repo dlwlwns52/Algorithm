@@ -27,37 +27,31 @@ def solution(s):
             if imsi[k] == "[" or imsi[k] == "{" or imsi[k] == "(":
                 stack.append(imsi[k])
             elif imsi[k] == "]" or imsi[k] == "}" or imsi[k] == ")":
+                if not stack:
+                    break
                 if imsi[k] == "]":
-                    if not stack:
+                    if stack[-1] != "[":
                         break
                     else:
-                        if stack[-1] != "[":
-                            break
-                        else:
-                            stack.pop()
+                        stack.pop()
                         
                 if imsi[k] == "}":
-                    if not stack:
+                    if stack[-1] != "{":
                         break
                     else:
-                        if stack[-1] != "{":
-                            break
-                        else:
-                            stack.pop()
+                        stack.pop()
                         
                         
                 if imsi[k] == ")":
-                    if not stack:
+                    if stack[-1] != "(":
                         break
                     else:
-                        if stack[-1] != "(":
-                            break
-                        else:
-                            stack.pop()
+                        stack.pop()
               
 
             #카운트 하는 로직
-            if k == len(s)-1 and not stack:
+        else:
+            if not stack:
                 count+=1
                 
         #회전하는 로직
