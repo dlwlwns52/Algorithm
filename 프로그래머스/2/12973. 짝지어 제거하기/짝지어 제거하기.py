@@ -11,11 +11,11 @@ def solution(s):
     
     for i in s:
         # 스택에 아무것도 없으면 현재거 append
-        if not stack:
-            stack.append(i)
-            continue
-#           같다면 빼기
-        if stack[-1] == i:
+#         if not stack:
+#             stack.append(i)
+#             continue
+# #           같다면 빼기
+        if stack and stack[-1] == i:
             stack.pop()
         else:
             stack.append(i)
