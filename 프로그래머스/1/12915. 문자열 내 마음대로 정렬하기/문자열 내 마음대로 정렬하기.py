@@ -8,15 +8,5 @@
 # 2. sort하는데 첫번째거 기준으로 한다.
 # 3. 두번째값만 순서대로 빼서 return
 def solution(strings, n):
-    arr = []
-    answer = []
-    strings.sort()
-    for i in strings:
-        arr.append((i[n], i))
-    
-    arr.sort(key = lambda x : x[0])
-    for i in arr:
-        answer.append(i[1])
-        
-        
-    return answer
+    strings.sort(key = lambda x : (x[n], x))
+    return strings
