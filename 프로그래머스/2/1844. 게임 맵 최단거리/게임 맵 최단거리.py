@@ -1,62 +1,41 @@
-# bfs문제다
-# 좌표, visited, 시작-끝점, 카운터, 큐
-# 시작점: (0,0), (len(n)-1, len(m)-1)
-# visited = [False for _ in maps] -> 이거 방법이 있었던거 같은데
-# count = [] -> 이거 변수명 뭐였지 좌표도 뭐였지
-# from collections import deque
-# dq = deque()
-# 0,0에서 시작, 
-# 해당 장소 방문 및 count +1 ,visited True,  큐에 넣기
-# while dq
-# for 좌표
-# maps 에 좌표 더한값이 있는데(현재에서 +1값) 그게 방문하지 않아싿면
-# 해당장소 큐에넣고 visited true count +1
+# 내위치 1,1 / 상대방 위치n,m
+# 상대방 위치 구하기 -> 행, 렬
+# 못찾으면 -1 반환
+# 좌표 설정 상하좌우
+# 재귀, 큐 써서
+# 1,1 q에 넣고 방문true
+# for 문 한도에 벗어나면 스킵, 상하좌우 길이만큼 만약 다음곳이 1이면 큐에넣기 count +1 -> 전역변수
 
 from collections import deque
 def solution(maps):
-    answer = -1
-    
-    visited = [[False] *len(maps[0]) for _ in maps]
-    count = [[0] * len(maps[0]) for _ in maps]
-        
+    answer = 0
+    d = [(1,0), (-1,0),(0,-1),(0,1)] #상하좌우
+    n, m = len(maps), len(maps[0]) # 상대방 위치 구하기 -> 행, 렬
     dq = deque()
-    nav = [(1,0), (-1,0), (0,1), (0,-1)]
-    start = (0,0)
-    end = (len(maps)-1, len(maps[0])-1) #이거 주의
+    start = (0,0,1)
+    distance = 0
     dq.append(start)
-    count[0][0] = 1
+    imi = [[False] * len(maps[0]) for _ in range(len(maps))]
     
     while dq:
-        dot = dq.popleft() #변수명
-        if dot[0] == len(maps)-1 and dot[1] == len(maps[0])-1:
-            answer = count[dot[0]][dot[1]]
-            
-        for i in nav:          
-            x = dot[0] + i[0]
-            y = dot[1] + i[1]
-            
-            if 0 <= x < len(maps) and 0 <= y < len(maps[0]):
-                if not visited[x][y] and maps[x][y] == 1:
-                    dq.append((x, y))
-                    visited[x][y] = True 
-                    count[x][y] = count[dot[0]][dot[1]] + 1
-    return answer
+        dy, dx, distance = dq.popleft()
+        
+        if dy == n-1 and dx == m-1:
+            return distance
+        
+        for row, col in d:
+            if 0 <= dy+row < n and 0 <= dx+col < m:
+                if imi[dy+row][dx+col] == False and maps[dy+row][dx+col] != 0:
+                    imi[dy+row][dx+col] = True
+                    dq.append((dy+row,dx+col, distance + 1 ))
+                    
+    return -1
+
+
+# UnboundLocalError: local variable 'count' referenced before assignment
+# RecursionError: maximum recursion depth exceeded while calling a Python object
 
 
 
-
-
-
-
-# [
-# [1,0,1,1,1],
-# [1,0,1,0,1],
-# [1,0,1,1,1],
-# [1,1,1,0,1],
-# [0,0,0,0,1]
-# ]
-
-# 1. 리컴
-#     visited = [[False] *len(maps[0]) for _ in maps]
-    # count = [[0] * len(maps[0]) for _ in maps]
-#     보통 좌표에서 x를 행으로 하는지..?
+# visited된 곳이면 false?
+# 
