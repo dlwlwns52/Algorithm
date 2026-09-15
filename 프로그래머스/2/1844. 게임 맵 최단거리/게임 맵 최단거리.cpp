@@ -3,43 +3,43 @@
 #include<iostream>
 using namespace std;
 
-int solution(vector<vector<int>> maps)
+int solution(vector<vector<int> > maps)
 {
     int answer = 0;
-    int n = maps.size();
+    queue<vector<int>> q;
+    q.push({0,0,1});
+    
     int m = maps[0].size();
-    vector<vector<bool>> bool_v(n, vector<bool>(m, false));
+    int n = maps.size();
     
-//     북 남 동 서
-    vector<int> dx = {0,0,1,-1};
-    vector<int> dy = {1,-1,0,0}; 
+    vector<int> dx = {0,0,-1,1};
+    vector<int> dy = {1,-1,0,0};
     
-    queue<vector<int>> v;
+    vector<vector<bool>> visited (n, vector(m, false));
+    visited[0][0] = true;
     
-    v.push({0,0, 1});
-    
-    while(!v.empty()){
-        vector<int> q = v.front();
-        v.pop();
+    while(!q.empty()){
+        vector<int> cur = q.front();
+        q.pop();
         
-        if(q[0] == m-1 && q[1]==n-1){
-            answer = q[2];
+        
+        if(cur[0] == m-1 && cur[1] == n-1){
+            answer = cur[2];
             break;
         }
-  
         for(int i=0; i<4; i++){
-            int nx = q[0] + dx[i];
-            int ny = q[1] + dy[i];
-            if(0 <= nx && nx < m && 0 <= ny && ny < n && !bool_v[ny][nx]){
-                if (maps[ny][nx] == 1){
-                    bool_v[ny][nx] = true;
-                    int cnt =q[2] +1;
-                    v.push({nx, ny, cnt});
-            }
+            int nx = cur[0] + dx[i];
+            int ny = cur[1] + dy[i];
+            if(0 <= nx && nx < m && 0 <= ny && ny < n && visited[ny][nx] == false && maps[ny][nx]== 1){
+                visited[ny][nx] = true;
+                int cnt = cur[2]+1;
+                q.push({nx,ny, cnt});
             }
         }
+        
     }
-    if (answer == 0){
+    
+    if(answer == 0){
         return -1;
     }
     
@@ -47,10 +47,8 @@ int solution(vector<vector<int>> maps)
 }
 
 
-// 최단거리 bfs
-// 0인곳과 nxm바깥부분 안됨
-// (n-1, m-1) 에 도달하면 종료
-// - bool nxm false배열 생성
-// - 이동 좌표 배열 생성 dx dy
-// - 현재값 true
-// while은 true로 했다가 더이상 갈곳없으면 return 
+// bfs
+// 큐(x,y,거리(1))
+// 큐front값체크 후pop
+// 만약 x 하고 y가 maps[0].size-1 maps.size-1 에도달하면 거리값 달고 반환
+// while문에서는 동서남북중에서 크기 안 넘어가고 1인경우 push
