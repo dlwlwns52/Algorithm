@@ -1,28 +1,24 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-
 using namespace std;
 
 vector<int> solution(vector<int> arr) {
-    if (arr.size() == 1){
+    vector<int> answer;
+    if(arr.size() == 1){
         return {-1};
     }
-    vector<int> answer;
-    vector<int> cp = arr;
-    sort(cp.begin(), cp.end());
-    int minist = cp[0];
     
-    auto it = find(arr.begin(), arr.end(), minist);
-    arr.erase(it);
-    
-    return arr;
+    int min = *min_element(arr.begin(),arr.end());
+    for(int i : arr){
+        if(i != min){
+            answer.push_back(i);
+        }
+    }
+    return answer;
 }
 
-// 1. 길이가 1일경우 -1리턴
-// 2. arr값 복사  -> 정렬후에 0번째값 찾고
-// 3. find()
 
-
-// 1. 가장 작은 값 찾기
-//  2. 작은 값 위치 제거
+// 0. arr 길이가 1이면 -1 반환.
+// 1. 배열  *min_element로 최소값 값 변수에 저장
+// 2. arr길이만큼 for문해서 최소값 아닌 값들 다 push_back
