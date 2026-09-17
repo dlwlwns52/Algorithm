@@ -1,30 +1,36 @@
-#include <string>
+#include<string>
 #include <iostream>
 #include <stack>
+
 using namespace std;
 
 bool solution(string s)
 {
     bool answer = true;
+
     stack<char> st;
-    
-    for (char c : s){
+    for(char c: s){
         if (c == '('){
             st.push(c);
-        } else if(c == ')'){
-            if (st.empty() || st.top() == ')'){
+        } else{
+            if(!st.empty() && st.top() == '('){
+                st.pop();
+            } else{
                 return false;
             }
-            st.pop();
         }
     }
-
-    if (!st.empty()){
-        return false;
+    
+    if(st.empty()){
+        return answer;
     }
-    return answer;
+    return false;
 }
 
 
-
-// stack 만들기 -> s길이대로 for문 -> "(" 인경우 넣기  / ")"인경우는 pop ->근데 비어있거나 "(" 이거면 return false
+// stack 사용
+// 1. #include <stack> / stack<char> st; 선언
+// 2. s 길이만큼 for문 (char c : s)
+//  - '(' 인 경우에는 st에 push
+//  - ')' 인 경우에는 st.top() == '(' 인 경우에 pop() 아닌경우 바로 false리턴
+// 3. 만약 stack이 비어있다면 true 그렇지않다면 false
