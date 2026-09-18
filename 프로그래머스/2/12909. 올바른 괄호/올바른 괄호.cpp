@@ -1,16 +1,15 @@
 #include<string>
 #include <iostream>
-#include <stack>
-
+#include<stack>
 using namespace std;
 
 bool solution(string s)
 {
     bool answer = true;
-
+    
     stack<char> st;
-    for(char c: s){
-        if (c == '('){
+    for(char c : s){
+        if(c == '('){
             st.push(c);
         } else{
             if(!st.empty() && st.top() == '('){
@@ -21,16 +20,17 @@ bool solution(string s)
         }
     }
     
-    if(st.empty()){
-        return answer;
+    if(!st.empty()){
+        return false;
     }
-    return false;
+    return answer;
 }
 
 
-// stack 사용
-// 1. #include <stack> / stack<char> st; 선언
-// 2. s 길이만큼 for문 (char c : s)
-//  - '(' 인 경우에는 st에 push
-//  - ')' 인 경우에는 st.top() == '(' 인 경우에 pop() 아닌경우 바로 false리턴
-// 3. 만약 stack이 비어있다면 true 그렇지않다면 false
+
+// 1. stack선언 및 생성
+// 2. s길이만큼 for문
+//      - ( 인경우에는 넣는다
+//      -  그외 경우 스택이 비어있지않고 top이 (이거면 pop 아닌경우 return false
+// 3. 비어있지 않다면 False
+// 4. True반환
