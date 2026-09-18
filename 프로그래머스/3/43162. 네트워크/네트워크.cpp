@@ -1,44 +1,36 @@
 #include <string>
 #include <vector>
 #include <iostream>
-using namespace std;
 
-vector<bool> visited;
-void dfs(int i, vector<vector<int>> computers){
-    visited[i] = true;
-    
-    for(int k=0; k< computers[0].size(); k++){
-        if(computers[i][k] == 1 && visited[k] == false){
-            dfs(k,computers);
-        }
-    }
+using namespace std;
+void dfs(int node, vector<bool>& visited, vector<vector<int>>& computers){
+    visited[node] = true;
+     for(int k=0; k<computers.size(); k++){
+         if(visited[k] ==false && computers[node][k] == 1){
+  
+             dfs(k,visited, computers);
+         }
+     }
 }
+
 
 int solution(int n, vector<vector<int>> computers) {
     int answer = 0;
-    for(int i=0; i<computers[0].size(); i++){
-        visited.push_back(false);
-    }
-
-    for(int i=0; i<computers[0].size(); i++){
-        if(visited[i] == false){
-            dfs(i, computers);
-            answer+=1;
-        }
-        
-    }
     
+    vector<bool> visited(computers.size(), false);
+    
+    for(int i=0; i<computers.size(); i++){
+        if (visited[i] == false){
+            answer+=1;
+            dfs(i, visited, computers);
+        }   
+    }
     return answer;
 }
 
 
-// dfs
-// visited = 컴퓨터한행의길이
-// for문 visited== fasle라면 dfs  cnt+1
-// dfs에서는 우선 현재값 true 설정 다음값이 1이면 computers[i][0] -> for문 computers사이즈만큼
-
-//  dfs에서는cur값 computers
-
-// [[1, 1, 0], 
-// [1, 1, 0], 
-// [0, 0, 1]]
+// 컴퓨터 개수대로 for문 - visited false인경우 dfs 실행 및 count +1
+// dfs (i, &visited, &computers)
+//  - 현재 방문처리
+//  - for문 컴퓨터 개수대로 computers[i][k]
+// - 만약 현재 방문하지 않았고 1인경우  dfs(k)
