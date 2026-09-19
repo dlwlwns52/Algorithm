@@ -6,74 +6,55 @@ using namespace std;
 
 int solution(vector<int> cards) {
     int answer = 0;
-    vector<bool> visited (cards.size(), false);
-    vector<int> v;
+    vector<int> groups;
+    vector<bool> visited(cards.size()+1, false);
     
     for(int i=0; i<cards.size(); i++){
-        if(visited[i] == true){
+        if(visited[i+1] == true){
             continue;
         }
-        int count = 0;
-        int next = cards[i]-1;
-
+        int count =0;
+        int card = cards[i];
         while(true){
-            if(visited[next] == true){
-                v.push_back(count);
+            if(visited[card] ==false){
+                count +=1;
+                visited[card] = true;
+                card = cards[card-1];
+            } else{
                 break;
             }
-            count +=1;
-            visited[next]=true;
-            next = cards[next]-1;
         }
+   
+        groups.push_back(count);
     }
+    sort(groups.begin(), groups.end());
+    int max1 = groups[groups.size()-1];
+    int max2 = groups[groups.size()-2];
     
-    sort(v.begin(), v.end());
-    
-    for(int i : v){
-        cout <<i << endl; 
-    }
-    answer = v[v.size()-1] *v[v.size()-2]; 
-    
+    answer = max1 * max2;
     return answer;
 }
 
 
 
-// visited필요 cards 길이만큼 / 카운트값 / 그룹벡터
-
-// cards길이만큼 for문 진행 : i값
-// 만약 방문했다면(true) 카운트 값 백터에 넣고 넘기기
-
-// 아니라면 whlie(true) 무한반복 걸고
-// - 만약 cards[cards[i]-1] 이 true라면 종료 break
-// - 아니라면 count  += 1, 방문처리
-
-
-
-
-
-
-
-
-// 카드 더비 1~100번 총 100장 / 2~100 자연수 하나정하고 그수보다 작거나 같은 숫자 카드 및 상자준비
-// 상자마다 카드를 한장씩 넣고 섞고 일렬로 나열 ->인덱스번호붙임
-// 상자를 열었을거기 카드번호에 해당하는 상자를 또 연다 => 반복했을때 이미 열려있을 경우.
-// 
-
-
-//  다고르면 0점?
-// 상자의수 x 상자의수
-// 이렇게 연 상자들은 1번 상자 그룹입니다. 이제 1번 상자 그룹을 다른 상자들과 섞이지 않도록 따로 둡니다. 만약 1번 상자 그룹을 제외하고 남는 상자가 없으면 그대로 게임이 종료되며, 이때 획득하는 점수는 0점입니다. -> 이건 왜 0점이야 / 다고르면 0점ㅁ?
-
-// dfs
-// 1번상자 x 2번상자 이거넣을 배열?해서 maxelement
-// dfs
-// 0. 만약 해당 인덱스가 visited true라면 숫자 배열에 저장
-// 1. 배열 길이가 2면 두개 곱해서 전역 벡터에 넣기 . 
-// 2. 방문 true
-// 3. 카드길이만큼 for문
-//  - if(cards[cards[i]-1])== false 
-//  - dfs에 해당 값하고 배열에 넣는다.
-
 // [8,6,3,7,2,5,1,4]
-// [1,2,3,4,5,6,7,8]
+// [0,1,2,3,4,5,6,7]
+// {1,4,7,8}, {2,5,6}, {3}
+// 그룹 개수를 벡터에 저장해야겠네
+
+// 그룹 개수 넣을 벡터, visited+1
+
+// visited를 cards개수+1만큼, 그룹 개수 백터 초기화
+// cards개수만큼 for문 - io
+// 만약 visited[i+1]라면 contune
+// int count=1;
+// int card = card[i];
+// while(true) 
+//  - if(visited[card] 방문하지 않았다면 )
+//      - count+1
+//      - card = cards[card]
+//     = 방문처리
+//  - else라면 break
+// 그룹 개수 벡터 push_back
+
+// 오름차순 정렬 가장 상위 두개 곱해서 반환
