@@ -1,79 +1,79 @@
 #include <string>
 #include <vector>
-#include <iostream>
+
 using namespace std;
 
 vector<int> solution(vector<string> park, vector<string> routes) {
-   
-    int row = park.size();
-    int col = park[0].size();
-    vector<int> cur;
-    for(int i=0; i<row; i++){
-        for(int j=0; j<col; j++){
+    vector<int> answer;
+    
+    for(int i=0; i<park.size(); i++){
+        for(int j=0; j<park[0].size(); j++){
             if(park[i][j] == 'S'){
-                cur.push_back(i);
-                cur.push_back(j);
+                answer.push_back(i);
+                answer.push_back(j);
             }
         }
-    }
-
-    for(string route : routes){
-        bool possible = true;
-        vector<int> temp = cur;
-        for(int i=0; i<route[2]-'0'; i++){
-            if(route[0] == 'E'){
-                temp[1] = temp[1]+1;
-                if(temp[1] == park[0].size() || park[temp[0]][temp[1]] == 'X'){
-                    possible = false;
-                    break;
-                } 
-                // cout << temp[1] <<endl;
-            }
-        
-            if(route[0] == 'W'){
-                temp[1] = temp[1]-1;
-                if(temp[1] < 0 || park[temp[0]][temp[1]] == 'X'){
-                    possible = false;
-                    break;
-                } 
-            }
-            
-            if(route[0] == 'N'){
-                temp[0] = temp[0]-1;
-                if(temp[0] < 0 || park[temp[0]][temp[1]] == 'X'){
-                    possible = false;
-                    break;
-                } 
-            }
-            
-            if(route[0] == 'S'){
-                temp[0] = temp[0]+1;
-                if(temp[0] == park.size() || park[temp[0]][temp[1]] == 'X'){
-                    possible = false;
-                    break;
-                } 
-            }
-        }
-        if(possible){
-            cur = temp;
-        }
-        
     }
     
-    return cur;
+    
+    vector<int> temp;
+    for(int i=0; i<routes.size(); i++){
+        temp = answer;
+        bool isVaild = true;
+        int route_count = routes[i][2]-'0';
+        for(int j=0; j<route_count; j++){
+            if(routes[i][0] == 'E'){
+                if(0 <= temp[1]+1 && temp[1]+1 < park[0].size() && park[temp[0]][temp[1]+1] != 'X'){
+                    temp[1] = temp[1]+1;
+                }else{
+                    isVaild = false;
+                    break;
+                }
+            }
+            
+            if(routes[i][0] == 'W'){
+                if(0 <= temp[1]-1 && temp[1]-1 < park[0].size() && park[temp[0]][temp[1]-1] != 'X'){
+                    temp[1] = temp[1]-1;
+                }else{
+                    isVaild = false;
+                    break;
+                }
+            }
+            if(routes[i][0] == 'N'){
+                if(0 <= temp[0]-1 && temp[0]-1 < park.size() && park[temp[0]-1][temp[1]] != 'X'){
+                    temp[0] = temp[0]-1;
+                }else{
+                    isVaild = false;
+                    break;
+                }
+                
+            }
+            if(routes[i][0] == 'S'){    
+                if(0 <= temp[0]+1 && temp[0]+1 < park.size() && park[temp[0]+1][temp[1]] != 'X'){
+                    temp[0] = temp[0]+1;
+                }else{
+                    isVaild = false;
+                    break;
+                }
+                
+            }
+        }
+        
+        if(isVaild){
+            answer = temp;
+        }
+    }
+    
+    return answer;
 }
 
-// 장애물이 있으면 안된다. 벗어나면 안된다.
-// "SOO",
-// "OXX",
-// "OOO"]
-//  어떻게 
-// 1. parks의 행, 열길이 변수에 저장,  현재좌표 = 출발 지점 저장  , 
-// 2. for route길이만큼 진행
-    // - //  - 가능한지 bool값 설정 
-//         - 임시좌표값 넣음
-// 3. for 거리만큼 for문진행 
-//   - 만약 더한값이 X거나 벗어나면 break / 아니라면 bool값 True
-//  - true 라면 현재좌표수정
 
-// 6.  현재좌표 반환
+// S위치 구하기
+// 현재 위치 벡터에 S넣음(answer로 사용?), 임시값 저장 벡터
+// routes 길이만큼 for문 진행
+// 임시벡터에 현재위치벡터 넣음
+// 정상종료 bool변수
+// 각각 방향에 맞게 routes[2] 길이만큼 for문
+// // 동서남북 체크
+// 만약 Park를 벗어지 않고 X도 아닌경우 break 및 정상종료 false
+// true시 현재 위치에 임시 벡터값  저장
