@@ -1,10 +1,10 @@
 # [level 1] 추억 점수 - 176963 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/176963) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/176963?language=cpp) 
 
 ### 성능 요약
 
-메모리: 10.7 MB, 시간: 0.99 ms
+메모리: 4.83 MB, 시간: 1.05 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 03월 02일 18:31:57
+2026년 09월 20일 14:06:46
 
 ### 문제 설명
 
