@@ -1,51 +1,75 @@
 #include <string>
 #include <vector>
-#include <queue>
+#include <map>
 #include <iostream>
 #include <algorithm>
 using namespace std;
 
 int solution(vector<vector<string>> book_time) {
-    int answer = 1;
-    priority_queue<int, vector<int>, greater<int>> pq;
-    vector<vector<int>> book_time_int;
+    int answer = 0;
     
-    for(vector<string> v : book_time){
-        int start = stoi(v[0].substr(0,2)) * 60 + stoi(v[0].substr(3,2));
-        int end = stoi(v[1].substr(0,2)) * 60  + stoi(v[1].substr(3,2)) +10;
-        book_time_int.push_back({start, end});
+    // string s = "15:00";
+    // int k = stoi(s.substr(0,2) + s.substr(3));
+    vector<vector<int>> book_time_int;
+    for(int i=0; i<book_time.size(); i++){
+        book_time_int.push_back({
+            stoi(book_time[i][0].substr(0,2) + book_time[i][0].substr(3)),
+            stoi(book_time[i][1].substr(0,2) + book_time[i][1].substr(3))
+        });   
     }
     
-    sort(book_time_int.begin(), book_time_int.end());
-    
-    for(int i=0; i< book_time_int.size(); i++){
-        if(pq.empty()){
-            pq.push(book_time_int[i][1]);
-        } else{
-            if(pq.top() > book_time_int[i][0]){
-                pq.push(book_time_int[i][1]);
-                answer +=1;
-            } else{
-                pq.pop();
-                pq.push(book_time_int[i][1]);
+    map<int, vector<vector<int>>> m;
+
+    int count = 1;
+    for(int i=0; i<book_time_int.size(); i++){
+        if(m.find(count) != m.end()){
+            for(auto a : m){
+                if(to_string(a.second.back()[1])[2] - '0' == 5){
+                    if(a.second.back()[1] + 10 >= 2400){
+                        a.second.back()[1] -= -2390;
+                    }else{
+                        a.second.back()[1] += 100;
+                    }
+                }else{
+                    a.second.back()[1] + 10;
+                }
+
+                if(a.second[0][0] <= book_time_int[i][0] ||
+                   a.second.back()[1] >= book_time_int[i][1]){
+                     count += 1;
+                    m[count].push_back({book_time_int[i]});
+                    
+                }
+                else{
+                    m[count].push_back({book_time_int[i]});
+                }
             }
+        } else{
+            m[count].push_back({book_time_int[i]});
         }
     }
     
-    
+    answer = m.size();
     return answer;
 }
 
 
-// -우선순위 큐생성(오름차순) , 
-// 1.벡터하나 생성 book time 시간+분 형태로 int형으로 저장
-// 2.book time을 시작시간 순으로 정렬
-// 3.booktime길이대로 for문
-//  - 만약 큐가 비어있다면 현재 값 넣기(대실 종료 시각))
-//  - 큐가 존재한다면
-//      - 만약 현재 top > 시작시간
-//           -  q.push(종료시각 +10) , count +1
-//      - 만약 현재 top이 <= 시작시간
-//          -  q.pop(), .q.push(종료시각 +10)
+// 시분 정수형으로 바꿔서 배열에 넣기 - 2중 for문
 
-// count 반환
+
+// int count = 0
+// book_time 개수만큼 for문
+//   - 키-count value-북타임 
+//   - 만약 count 키값이 존재한다면
+//   - for 맵 -> 현재 시각하고 지금 시각 비교  (만약 십의자리가 60인경우 올리기)만약 안에 들어온다면 count[count ]에 넣고 종료
+
+// 
+//   - else라면 count+1 에 벨류값넣기
+
+
+
+//  (만약 십의자리가 10분더했을때 60 (ex 2250) 이라면 그리고 23시59분일경우)
+//  십의자리가 10분더했을때 2400보다 작다면 3번째 +100 만약 2400보다 크다면 더하고 -2400 
+
+
+// 맵에서 벨류값이 백터일때 값을 더넣으려면 m.push_back({r값}) 하면되나
