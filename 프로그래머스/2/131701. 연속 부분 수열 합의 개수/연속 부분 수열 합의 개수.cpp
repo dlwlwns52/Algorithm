@@ -6,39 +6,39 @@ using namespace std;
 
 int solution(vector<int> elements) {
     int answer = 0;
-    vector<int> v;
-    for(int i=0; i<2; i++){
-        for(int j=0; j<elements.size(); j++){
-            v.push_back(elements[j]);
+    vector<int> delements;
+    for (int i=0; i<2; i++){
+        for(int j: elements){
+            delements.push_back(j);
         }
-    }
-    set<int> st;
-    vector<int> prefix(v.size()+1, 0);
-    for(int i=0; i<v.size(); i++){
-        prefix[i+1] = v[i] + prefix[i];
+
     }
     
-    for (auto i : prefix){
-        cout << i << endl;
+    set<int> s;
+    vector<int> prefix;
+    prefix.push_back(0);
+    for (int i=0; i<delements.size(); i++){
+        prefix.push_back(delements[i] + prefix[i]);
     }
     
     for(int i=0; i<elements.size(); i++){
         for(int j=1; j<elements.size()+1; j++){
-            st.insert(prefix[i+j+1] - prefix[j]);
+            s.insert(prefix[i+j]-prefix[i]);
         }
     }
-    answer= st.size();
-    return answer;
     
+    answer = s.size();
+    return answer;
 }
 
 
 
-// 정답 set, 누적합
+// [7,9,1,1,4,7,9,1,1,4] - 원형벡터
+// [0,7,16,17,18 ~ 합산값] - 누적값
+//elements 배열 x2한 배열 생성, 합산 내용 넣을 set구성
+// 누적합 계산, 0값 초기화 후에 값넣기
+// for문 기존 원소 개수만큼 -> 원소 다 돌아야되니깐
+    // -,기존원소+1만큼 for문 - j -> 1부터개수니깐
+        // -.set.insert(prefix[i+j]-prefix[i])
 
-// 1. elements 길이 *2 배열 생성
-// 2. perfix(배열길이 +1 , 0) 생성
-// 3.for문 elements길이만큼
-// 4.   for문 elements길이만큼
-// 5.       - prefix(j+i+1) - prefix(i) 값 set에 넣기
-// 6. set값반환
+// return set길이
